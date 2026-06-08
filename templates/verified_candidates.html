@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verified Candidates | NexGen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; background-color: #0f172a; color: #f8fafc; }
+        .bg-gif-layer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: url('https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWZkam8wcnFjN2c1Mmk0eDR1bzE3dHh6bHg3Z3llZ3NpNmZxdDJoNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YqhIK6Gbor6CLeloBq/giphy.gif') no-repeat center center fixed; background-size: cover; z-index: -3; opacity: 0.6; filter: saturate(1.5) contrast(1.2); }
+        .bg-gradient-layer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: linear-gradient(-45deg, rgba(236, 72, 153, 0.5), rgba(139, 92, 246, 0.4), rgba(56, 189, 248, 0.4), rgba(52, 211, 153, 0.4)); background-size: 400% 400%; animation: moveGradient 15s ease infinite; z-index: -2; mix-blend-mode: overlay; }
+        @keyframes moveGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .dark-dim-layer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.7); z-index: -1; }
+        h1, h2, h3, h4, th, .heading-font { font-family: 'Poppins', sans-serif; }
+        .glass-nav { background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.15); }
+        .glass-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%); backdrop-filter: blur(28px); border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), inset 0 0 1px rgba(255, 255, 255, 0.3); border-top: 1px solid rgba(255, 255, 255, 0.4); border-left: 1px solid rgba(255, 255, 255, 0.3); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+        .glass-card:hover { transform: translateY(-8px); box-shadow: 0 35px 60px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(255, 255, 255, 0.4), 0 0 40px rgba(139, 92, 246, 0.3); border-color: rgba(236, 72, 153, 0.3); }
+        .gradient-text { background: linear-gradient(135deg, #00f2fe 0%, #4facfe 30%, #f093fb 70%, #f5576c 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shineText 4s linear infinite; }
+        @keyframes shineText { to { background-position: 200% center; } }
+        .table-row-hover:hover { background: rgba(255, 255, 255, 0.05); }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+</head>
+<body class="relative min-h-screen flex flex-col">
+
+    <div class="bg-gif-layer"></div>
+    <div class="bg-gradient-layer"></div>
+    <div class="dark-dim-layer"></div>
+
+    <nav class="glass-nav py-4 px-4 md:px-8 relative z-10 flex flex-col md:flex-row justify-between items-center gap-4">
+        <h1 class="text-xl font-bold tracking-wide flex items-center gap-3">
+            <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-18M12 15v2m0-8h0"></path></svg>
+            <span class="gradient-text">Admin Gateway</span>
+        </h1>
+        <a href="/admin/dashboard" class="flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-white transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Return to Dashboard
+        </a>
+    </nav>
+
+    <main class="container mx-auto py-10 px-4 relative z-10 w-full max-w-7xl">
+        <div class="glass-card p-8 md:p-10 rounded-3xl w-full">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10 border-b border-white/10 pb-8">
+                <div class="flex items-center gap-5">
+                    <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 shadow-lg">
+                        <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-bold text-white heading-font mb-1">Verified Candidates</h2>
+                        <p class="text-gray-400 text-sm font-light">List of all officially verified candidates.</p>
+                    </div>
+                </div>
+            </div>
+
+            {% if candidates %}
+            <div class="overflow-x-auto rounded-2xl border border-white/10 bg-black/20 shadow-xl">
+                <table class="w-full text-left border-collapse whitespace-nowrap">
+                    <thead>
+                        <tr class="bg-white/5 border-b border-white/10 text-xs font-semibold text-gray-300 uppercase tracking-wider">
+                            <th class="px-6 py-5">Candidate Name</th>
+                            <th class="px-6 py-5">Email</th>
+                            <th class="px-6 py-5">Party</th>
+                            <th class="px-6 py-5">Region</th>
+                            <th class="px-6 py-5">Election Type</th>
+                            <th class="px-6 py-5">Reg Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5 text-sm">
+                        {% for candidate in candidates %}
+                        <tr class="table-row-hover text-gray-300">
+                            <td class="px-6 py-5 font-semibold text-white">
+                                <div class="flex items-center gap-3">
+                                    {% if candidate.logo %}
+                                    <img src="{{ candidate.logo }}" class="w-8 h-8 rounded-full border border-white/20 object-cover" alt="logo">
+                                    {% endif %}
+                                    {{ candidate.name }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-5">{{ candidate.email }}</td>
+                            <td class="px-6 py-5"><span class="bg-indigo-500/20 text-indigo-300 px-3 py-1.5 rounded-lg border border-indigo-500/30 font-medium text-xs">{{ candidate.party }}</span></td>
+                            <td class="px-6 py-5 text-gray-400">{{ candidate.region }}</td>
+                            <td class="px-6 py-5 font-medium">{{ candidate.election_type }}</td>
+                            <td class="px-6 py-5 text-gray-500">{{ candidate.registration_date.strftime('%Y-%m-%d') if candidate.registration_date else 'N/A' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-20 bg-black/10 border border-white/5 rounded-2xl flex flex-col items-center justify-center">
+                <h3 class="text-2xl text-white font-semibold mb-2 heading-font">No Records Found</h3>
+                <p class="text-gray-400 text-sm font-light max-w-sm mx-auto">There are no verified candidates in the system yet.</p>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

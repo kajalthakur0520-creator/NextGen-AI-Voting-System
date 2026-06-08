@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Audit Logs | NexGen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        
+        .bg-gif-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url('https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWZkam8wcnFjN2c1Mmk0eDR1bzE3dHh6bHg3Z3llZ3NpNmZxdDJoNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YqhIK6Gbor6CLeloBq/giphy.gif') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -3;
+            opacity: 0.6;
+            filter: saturate(1.5) contrast(1.2);
+        }
+
+        .bg-gradient-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(
+                -45deg, 
+                rgba(236, 72, 153, 0.5), /* Pink */
+                rgba(139, 92, 246, 0.4), /* Violet */
+                rgba(56, 189, 248, 0.4), /* Cyan */
+                rgba(52, 211, 153, 0.4)  /* Emerald */
+            );
+            background-size: 400% 400%;
+            animation: moveGradient 15s ease infinite;
+            z-index: -2;
+            mix-blend-mode: overlay;
+        }
+        
+        @keyframes moveGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .dark-dim-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.7);
+            z-index: -1;
+        }
+
+        h1, h2, h3, h4, th, .heading-font {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), inset 0 0 1px rgba(255, 255, 255, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+            transform: skewX(-20deg);
+            transition: all 0.7s ease;
+        }
+        
+        .glass-card:hover::before {
+            left: 200%;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(255, 255, 255, 0.4), 0 0 40px rgba(139, 92, 246, 0.3);
+            border-color: rgba(236, 72, 153, 0.3);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 30%, #f093fb 70%, #f5576c 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shineText 4s linear infinite;
+        }
+        
+        @keyframes shineText {
+            to { background-position: 200% center; }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</head>
+<body class="relative min-h-screen flex flex-col">
+
+    <!-- Background Animation Elements -->
+    <div class="bg-gif-layer"></div>
+    <div class="bg-gradient-layer"></div>
+    <div class="dark-dim-layer"></div>
+
+    <!-- Navbar -->
+    <nav class="glass-nav py-4 px-4 md:px-8 relative z-10 flex flex-col md:flex-row justify-between items-center gap-4">
+        <h1 class="text-xl font-bold tracking-wide flex items-center gap-3">
+            <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <span class="gradient-text">System Audit Logs</span>
+        </h1>
+        <div class="flex flex-wrap justify-center gap-4 items-center">
+            <a href="{{ url_for('admin_bp.dashboard') }}" class="flex items-center gap-2 text-sm font-medium text-indigo-300 hover:text-white transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Return to Dashboard
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container mx-auto my-10 p-4 relative z-10 w-full max-w-6xl flex-grow flex flex-col">
+        
+        <div class="glass-card p-8 rounded-3xl h-full flex flex-col flex-grow">
+            <div class="flex justify-between items-center mb-8 pb-4 border-b border-white/10">
+                <h2 class="text-2xl font-bold text-white heading-font">Live Administrative Ledgers</h2>
+                <div class="px-4 py-2 bg-indigo-500/20 border border-indigo-500/30 rounded-full flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-indigo-400 rounded-full animate-pulse"></span>
+                    <span class="text-indigo-200 text-xs font-semibold tracking-wide uppercase">Monitoring Active</span>
+                </div>
+            </div>
+
+            <div class="bg-black/30 rounded-2xl border border-white/10 overflow-hidden flex-grow flex flex-col">
+                <div class="overflow-x-auto w-full">
+                    <div class="min-w-[700px]">
+                        <!-- Log Header -->
+                        <div class="grid grid-cols-12 gap-4 px-6 py-4 bg-white/5 border-b border-white/10 text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                            <div class="col-span-3">Timestamp</div>
+                            <div class="col-span-3">Action Type</div>
+                            <div class="col-span-6">System Trace Details</div>
+                        </div>
+                        
+                        <!-- Log Body -->
+                        <div class="flex-grow overflow-y-auto custom-scrollbar max-h-[60vh]">
+                    {% for log in logs %}
+                    <div class="grid grid-cols-12 gap-4 px-6 py-4 border-b border-white/5 hover:bg-white/5 transition-colors items-center group">
+                        <div class="col-span-3 text-sm text-gray-500 font-mono">
+                            {{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+                        </div>
+                        <div class="col-span-3">
+                            {% if 'Created' in log.action or 'Added' in log.action or 'Approved' in log.action or 'Verified' in log.action %}
+                                <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-lg text-xs font-semibold">{{ log.action }}</span>
+                            {% elif 'Removed' in log.action or 'Deleted' in log.action or 'Denied' in log.action %}
+                                <span class="px-3 py-1 bg-red-500/20 text-red-300 border border-red-500/30 rounded-lg text-xs font-semibold">{{ log.action }}</span>
+                            {% else %}
+                                <span class="px-3 py-1 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-lg text-xs font-semibold">{{ log.action }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="col-span-6 text-sm text-gray-300 font-light group-hover:text-white transition-colors">
+                            {{ log.details }}
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="p-12 text-center text-gray-500 flex flex-col items-center justify-center">
+                        <svg class="w-12 h-12 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <p>No systemic actions recorded in the immutable ledger.</p>
+                    </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+</body>
+</html>

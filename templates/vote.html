@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Ballot | NexGen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        
+        .bg-gif-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url('https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWZkam8wcnFjN2c1Mmk0eDR1bzE3dHh6bHg3Z3llZ3NpNmZxdDJoNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YqhIK6Gbor6CLeloBq/giphy.gif') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -3;
+            opacity: 0.6;
+            filter: saturate(1.5) contrast(1.2);
+        }
+
+        .bg-gradient-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(
+                -45deg, 
+                rgba(236, 72, 153, 0.5), /* Pink */
+                rgba(139, 92, 246, 0.4), /* Violet */
+                rgba(56, 189, 248, 0.4), /* Cyan */
+                rgba(52, 211, 153, 0.4)  /* Emerald */
+            );
+            background-size: 400% 400%;
+            animation: moveGradient 15s ease infinite;
+            z-index: -2;
+            mix-blend-mode: overlay;
+        }
+        
+        @keyframes moveGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .dark-dim-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.7);
+            z-index: -1;
+        }
+
+        h1, h2, h3, h4, th, .heading-font {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), inset 0 0 1px rgba(255, 255, 255, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+            transform: skewX(-20deg);
+            transition: all 0.7s ease;
+        }
+        
+        .glass-card:hover::before {
+            left: 200%;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(255, 255, 255, 0.4), 0 0 40px rgba(139, 92, 246, 0.3);
+            border-color: rgba(236, 72, 153, 0.3);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 30%, #f093fb 70%, #f5576c 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shineText 4s linear infinite;
+        }
+        
+        @keyframes shineText {
+            to { background-position: 200% center; }
+        }
+        
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .btn-elegant {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+        }
+        
+        .btn-elegant::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+            z-index: -1;
+            transition: opacity 0.4s ease;
+            opacity: 0;
+        }
+        
+        .btn-elegant:hover::before {
+            opacity: 1;
+        }
+        
+        .btn-elegant:hover {
+            box-shadow: 0 0 25px rgba(240, 147, 251, 0.7);
+            transform: translateY(-3px) scale(1.02);
+        }
+        
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+        }
+        
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(236, 72, 153, 0.6);
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
+            transform: translateY(-3px);
+        }
+        
+        .glass-input {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .glass-input:focus {
+            outline: none;
+            border-color: rgba(240, 147, 251, 0.8);
+            background: rgba(15, 23, 42, 0.7);
+            box-shadow: 0 0 20px rgba(240, 147, 251, 0.4);
+            transform: scale(1.01);
+        }
+        
+        .pulse-border {
+            animation: borderPulse 3s infinite;
+        }
+        
+        @keyframes borderPulse {
+            0% { border-color: rgba(255,255,255,0.1); }
+            50% { border-color: rgba(240, 147, 251, 0.6); box-shadow: 0 0 20px rgba(240, 147, 251, 0.3); }
+            100% { border-color: rgba(255,255,255,0.1); }
+        }
+    </style>
+    <script>
+        async function captureFace() {
+            const video = document.getElementById('video');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0);
+            const faceData = canvas.toDataURL('image/jpeg');
+            document.getElementById('face_data').value = faceData;
+            
+            const captureBtn = document.getElementById('captureBtn');
+            const statusBox = document.getElementById('statusBox');
+            const submitBtn = document.getElementById('submitVoteBtn');
+            
+            captureBtn.innerHTML = "Verifying...";
+            captureBtn.disabled = true;
+
+            try {
+                const response = await fetch("{{ url_for('voter_bp.verify_face') }}", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ face_data: faceData })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    captureBtn.classList.replace('btn-elegant', 'btn-elegant-success');
+                    captureBtn.innerHTML = "✓ Identity Confirmed";
+                    statusBox.innerHTML = "<span class='text-emerald-400 font-medium text-sm flex items-center justify-center gap-2'><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'></path></svg> Ready Submitting Ballot</span>";
+                    statusBox.classList.remove('hidden');
+                    
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Verified!',
+                        text: 'Face matched successfully.',
+                        background: '#1e293b',
+                        color: '#f8fafc',
+                        confirmButtonColor: '#4facfe',
+                    });
+                } else {
+                    captureBtn.innerHTML = "Verify Identity";
+                    captureBtn.disabled = false;
+                    document.getElementById('face_data').value = "";
+                    
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Verification Failed',
+                        text: data.error || 'Face does not match the registered voter. You cannot submit your vote.',
+                        background: '#1e293b',
+                        color: '#f8fafc',
+                        confirmButtonColor: '#ef4444',
+                    });
+                }
+            } catch (err) {
+                console.error(err);
+                captureBtn.innerHTML = "Verify Identity";
+                captureBtn.disabled = false;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Something went wrong during verification.',
+                    background: '#1e293b',
+                    color: '#f8fafc',
+                    confirmButtonColor: '#ef4444',
+                });
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</head>
+<body class="relative min-h-screen flex flex-col">
+
+    <!-- Background Animation Elements -->
+    <div class="bg-gif-layer"></div>
+    <div class="bg-gradient-layer"></div>
+    <div class="dark-dim-layer"></div>
+
+    <!-- Navbar -->
+    <nav class="glass-nav py-4 px-6 relative z-10 border-b-2 border-indigo-500/30">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <h1 class="text-xl md:text-2xl font-bold tracking-wide gradient-text flex items-center gap-3">
+                <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Secure Ballot Terminal
+            </h1>
+            <div class="flex flex-wrap items-center justify-center space-x-2 md:space-x-4">
+                <span class="text-sm font-semibold text-white hidden md:inline-block border border-white/10 bg-white/5 py-1.5 px-3 rounded-xl shadow-inner">{{ voter_name }}</span>
+                <a href="{{ url_for('voter_bp.logout') }}" class="text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/30 px-4 py-2 rounded-xl hover:bg-red-500/20 transition-colors">Abort</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex justify-center items-center py-10 px-4 relative z-10 w-full mb-10">
+        <div class="glass-card p-10 md:p-12 rounded-3xl w-full max-w-5xl">
+            
+            <div class="text-center mb-12">
+            <div class="text-center mb-12 flex flex-col items-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white heading-font mb-2">
+                    {{ election.name }}
+                </h2>
+                <div class="mb-4">
+                     <span class="text-xs font-semibold uppercase tracking-wider bg-violet-500/20 text-violet-300 px-3 py-1 rounded-full border border-violet-500/30">
+                        {{ election.type if election.type else 'Custom Election' }}
+                     </span>
+                </div>
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-500/20 border border-indigo-500/30 rounded-xl text-indigo-200 text-sm font-medium">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Ref ID: {{ election._id }}
+                </div>
+            </div>
+
+            <form method="POST" class="grid grid-cols-1 lg:grid-cols-5 gap-10">
+
+                <!-- Candidate Selection (Takes up 3 cols) -->
+                <div class="lg:col-span-3 flex flex-col h-full bg-black/20 p-8 rounded-2xl border border-white/10 shadow-inner">
+                    <h3 class="text-lg text-white font-semibold mb-6 flex items-center gap-3 pb-4 border-b border-white/10">
+                        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-500 text-white text-sm font-bold">1</span>
+                        Select Candidate
+                    </h3>
+                    
+                    <div class="space-y-4 flex-grow overflow-y-auto pr-2 custom-scrollbar">
+                        {% for candidate in candidates %}
+                        <label class="flex items-center space-x-5 bg-white/5 p-5 rounded-xl border border-white/10 hover:border-indigo-400 hover:bg-white/10 transition-all cursor-pointer group shadow-sm">
+                            <input type="radio" name="candidate" value="{{ candidate }}" required class="premium-radio flex-shrink-0">
+                            <div class="flex-grow">
+                                <span class="text-lg font-semibold text-white group-hover:text-indigo-200 transition-colors">{{ candidate.name }}</span>
+                                <span class="block text-sm text-gray-400 mt-1 flex items-center gap-2">
+                                    {% if candidate.logo %}
+                                    <img src="{{ candidate.logo }}" class="w-6 h-6 rounded-full object-cover border border-indigo-500/30 bg-black/50" alt="{{ candidate.party }} Logo">
+                                    {% else %}
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                    {% endif %}
+                                    {{ candidate.party }}
+                                </span>
+                                {% if candidate.description %}
+                                <span class="block text-xs text-gray-500 mt-2 font-light leading-relaxed border-t border-white/5 pt-2">
+                                    {{ candidate.description }}
+                                </span>
+                                {% endif %}
+                            </div>
+                        </label>
+                        {% else %}
+                        <div class="p-6 bg-amber-500/10 border border-amber-500/30 rounded-xl text-center flex flex-col items-center justify-center h-full">
+                            <svg class="w-8 h-8 text-amber-500 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            <p class="text-sm text-amber-200 font-medium">No candidates are currently active in this election.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Face Verification (Takes up 2 cols) -->
+                <div class="lg:col-span-2 flex flex-col bg-black/20 p-8 rounded-2xl border border-white/10 shadow-inner">
+                    <h3 class="text-lg text-white font-semibold mb-6 flex items-center gap-3 pb-4 border-b border-white/10">
+                        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-500 text-white text-sm font-bold">2</span>
+                        Biometric Verification
+                    </h3>
+                    
+                    <div class="flex flex-col items-center flex-grow justify-center w-full">
+                        <div class="relative w-full aspect-square md:aspect-video lg:aspect-square mb-6 rounded-2xl overflow-hidden border border-white/20 bg-black/60 shadow-lg">
+                            <video id="video" autoplay class="absolute inset-0 w-full h-full object-cover"></video>
+                            
+                            <!-- Premium Scanner overlay -->
+                            <div class="absolute inset-x-0 top-1/2 h-0.5 bg-indigo-500 shadow-[0_0_10px_2px_rgba(99,102,241,0.5)] transform -translate-y-1/2 opacity-70 animate-[scan_3s_ease-in-out_infinite_alternate]"></div>
+
+                        </div>
+
+                        <input type="hidden" name="face_data" id="face_data" required>
+                        
+                        <button type="button" id="captureBtn" onclick="captureFace()" class="btn-elegant w-full text-white px-5 py-4 rounded-xl font-medium text-base transition-all flex items-center justify-center gap-2 mb-4">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
+                            Verify Identity
+                        </button>
+                        
+                        <div id="statusBox" class="hidden text-center w-full bg-emerald-500/10 border border-emerald-500/30 p-3 rounded-xl mt-auto">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="lg:col-span-5 flex flex-col items-center mt-4">
+                    <p class="text-sm text-gray-400 font-medium mb-6 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        Vote submissions are final and cryptographically sealed.
+                    </p>
+                    
+                    <button type="submit" id="submitVoteBtn" disabled class="btn-elegant-success w-full md:w-2/3 lg:w-1/2 text-white px-8 py-5 rounded-2xl font-bold text-lg transition-all flex justify-center items-center gap-3 opacity-50 cursor-not-allowed">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Submit Ballot
+                    </button>
+                    
+                    <a href="{{ url_for('voter_bp.dashboard') }}" class="mt-8 text-sm text-indigo-300 hover:text-white transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                        Return to Dashboard
+                    </a>
+                </div>
+                
+            </form>
+        </div>
+    </main>
+
+    <script>
+
+
+        // Init camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => { 
+                document.getElementById('video').srcObject = stream; 
+            })
+            .catch(err => { 
+                console.error("Hardware fault:", err); 
+                document.getElementById('statusBox').innerHTML = "<span class='text-red-400 font-medium text-sm flex items-center justify-center gap-2'><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'></path></svg> Camera Access Denied</span>";
+                document.getElementById('statusBox').classList.remove('hidden');
+                document.getElementById('statusBox').classList.replace('bg-emerald-500/10', 'bg-red-500/10');
+                document.getElementById('statusBox').classList.replace('border-emerald-500/30', 'border-red-500/30');
+            });
+            
+        // Form validation to ensure face is captured
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const faceData = document.getElementById('face_data').value;
+            if (!faceData) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Verification Required',
+                    text: 'Please verify your identity by scanning your face before submitting.',
+                    background: '#1e293b',
+                    color: '#f8fafc',
+                    confirmButtonColor: '#4facfe',
+                });
+            }
+        });
+    </script>
+   
+</body>
+</html>
