@@ -9,8 +9,8 @@ from email.mime.multipart import MIMEMultipart
 # If using Gmail, you MUST generate an "App Password" (do not use your regular password).
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-SENDER_EMAIL = "kajalthakur0520@gmail.com"
-SENDER_PASSWORD = "jnwt fmwa enrz hfsb"
+SENDER_EMAIL = "enter_your_email"
+SENDER_PASSWORD = "enter_your_passkey"
 
 def send_otp_email(recipient_email, otp):
     """
